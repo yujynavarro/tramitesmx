@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Onboarding TuHabi · Módulo 9 — Equipo De Trámites MX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      background:#F3F0FA;
+      color:#1a1a2e;
+      min-height:100vh;
+    }
+
+    /* ── HEADER ──────────────────────────── */
+    .site-header{
+      background:linear-gradient(135deg,#7B2FBE 0%,#6825CD 50%,#5B21B6 100%);
+      padding:28px 20px 32px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .site-header::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse 80% 120% at 50% -20%,rgba(255,255,255,0.12) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .header-logos{
+      display:flex;align-items:center;justify-content:center;gap:12px;
+      margin-bottom:14px;position:relative;
+    }
+    .header-logos img{height:38px;width:auto;object-fit:contain;}
+    .header-sep{width:1px;height:30px;background:rgba(255,255,255,0.4);}
+    .header-tuhabi-text{
+      font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.02em;
+    }
+    .header-tuhabi-text span{color:#FFD166;}
+    .header-kicker{
+      font-size:11px;font-weight:600;letter-spacing:0.15em;
+      text-transform:uppercase;color:rgba(255,255,255,0.7);
+      margin-bottom:8px;position:relative;
+    }
+    .header-title{
+      font-size:clamp(26px,5vw,38px);font-weight:700;color:#fff;
+      position:relative;line-height:1.15;
+    }
+    .header-chips{
+      display:flex;align-items:center;justify-content:center;
+      gap:10px;flex-wrap:wrap;margin-top:14px;position:relative;
+    }
+    .chip{
+      background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);
+      border-radius:999px;padding:5px 14px;font-size:12px;font-weight:500;
+      color:#fff;display:flex;align-items:center;gap:5px;
+    }
+    .chip.green{background:rgba(74,222,128,0.2);border-color:rgba(74,222,128,0.4);}
+
+    /* ── PROGRESS ────────────────────────── */
+    .progress-wrap{
+      background:#fff;position:sticky;top:0;z-index:100;
+      padding:0 20px;
+      border-bottom:1px solid #E8E0F5;
+      display:flex;align-items:center;gap:14px;height:44px;
+    }
+    .progress-track{
+      flex:1;background:#E8E0F5;border-radius:999px;height:8px;overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;width:0%;border-radius:999px;
+      background:linear-gradient(90deg,#7B2FBE,#6825CD);
+      transition:width 0.6s ease;
+    }
+    .progress-pct{
+      font-size:13px;font-weight:600;color:#6825CD;min-width:36px;text-align:right;
+    }
+
+    /* ── MAIN CONTENT ────────────────────── */
+    .page-wrap{
+      max-width:720px;margin:0 auto;padding:28px 16px 80px;
+      display:flex;flex-direction:column;gap:16px;
+    }
+
+    /* ── INTRO CARD ──────────────────────── */
+    .intro-card{
+      background:#fff;border-radius:16px;padding:28px 28px 28px 32px;
+      border-left:4px solid #6825CD;
+      box-shadow:0 2px 12px rgba(104,37,205,0.08);
+    }
+    .intro-card h2{
+      font-size:17px;font-weight:700;color:#6825CD;margin-bottom:8px;
+    }
+    .intro-card p{font-size:14px;color:#444;line-height:1.6;margin-bottom:14px;}
+    .llave-chips{display:flex;flex-wrap:wrap;gap:8px;}
+    .llave-chip{
+      background:#FFF8E6;border:1px solid #FFD166;border-radius:999px;
+      padding:5px 14px;font-size:12px;font-weight:500;color:#B8860B;
+    }
+
+    /* ── SECTION LABEL ───────────────────── */
+    .section-label{
+      font-size:11px;font-weight:700;letter-spacing:0.12em;
+      text-transform:uppercase;color:#9B8CB8;padding:0 4px;
+    }
+
+    /* ── ACCORDION ───────────────────────── */
+    .accordion{
+      background:#fff;border-radius:16px;
+      box-shadow:0 2px 12px rgba(104,37,205,0.07);
+      overflow:hidden;
+    }
+    .acc-header{
+      display:flex;align-items:center;gap:14px;
+      padding:18px 20px;cursor:pointer;
+      user-select:none;
+      transition:background 0.15s;
+    }
+    .acc-header:hover{background:#FAFAFE;}
+    .acc-num{
+      width:34px;height:34px;border-radius:50%;
+      background:#6825CD;color:#fff;
+      font-size:14px;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;transition:background 0.2s;
+    }
+    .acc-header.open .acc-num{background:#22C55E;}
+    .acc-title{font-size:15px;font-weight:600;color:#1a1a2e;flex:1;}
+    .acc-meta{font-size:12px;color:#9B8CB8;margin-right:8px;white-space:nowrap;}
+    .acc-arrow{
+      color:#9B8CB8;font-size:14px;
+      transition:transform 0.25s;flex-shrink:0;
+    }
+    .acc-header.open .acc-arrow{transform:rotate(180deg);}
+
+    .acc-body{
+      max-height:0;overflow:hidden;
+      transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .acc-body.open{max-height:2400px;}
+
+    .acc-inner{padding:0 24px 24px 72px;}
+
+    /* content inside accordion */
+    .acc-inner p{font-size:14px;color:#444;line-height:1.7;margin-bottom:12px;}
+    .acc-inner p:last-child{margin-bottom:0;}
+
+    /* term items */
+    .term-list{display:flex;flex-direction:column;gap:14px;}
+    .term-item{
+      background:#F8F5FF;border-radius:12px;padding:16px 18px;
+      border-left:3px solid #6825CD;
+    }
+    .term-item.alt{border-left-color:#7C3AED;}
+    .term-item dt{
+      font-size:13px;font-weight:700;color:#6825CD;margin-bottom:5px;
+      display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    }
+    .term-tag{
+      background:#EDE3FC;color:#6825CD;font-size:10px;font-weight:700;
+      padding:1px 8px;border-radius:4px;
+    }
+    .term-item dd{font-size:13px;color:#555;line-height:1.6;}
+
+    /* flow steps */
+    .flow-steps{display:flex;flex-direction:column;gap:0;}
+    .flow-step{
+      display:flex;align-items:flex-start;gap:14px;
+      padding:14px 0;
+      border-bottom:1px solid #F0EAF9;
+    }
+    .flow-step:last-child{border-bottom:none;}
+    .step-num{
+      width:28px;height:28px;border-radius:50%;
+      background:#EDE3FC;color:#6825CD;
+      font-size:12px;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;margin-top:1px;
+    }
+    .step-body{}
+    .step-title{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:3px;}
+    .step-desc{font-size:13px;color:#666;line-height:1.55;}
+
+    /* momento llave */
+    .momento-llave{
+      background:linear-gradient(135deg,#2D1060 0%,#3D1B8A 100%);
+      border-radius:14px;padding:22px 24px;margin-top:18px;
+      text-align:center;
+    }
+    .momento-llave .ml-label{
+      font-size:11px;font-weight:700;letter-spacing:0.1em;
+      text-transform:uppercase;color:#C084FC;margin-bottom:8px;
+    }
+    .momento-llave .ml-text{
+      font-size:15px;font-weight:600;color:#fff;line-height:1.5;
+    }
+
+    /* ── QUIZ SECTION ────────────────────── */
+    .quiz-section{
+      background:#fff;border-radius:16px;
+      box-shadow:0 2px 12px rgba(104,37,205,0.07);
+      overflow:hidden;
+    }
+    .quiz-eyebrow{
+      font-size:11px;font-weight:700;letter-spacing:0.12em;
+      text-transform:uppercase;color:#9B8CB8;padding:22px 24px 0;
+    }
+    .quiz-title{
+      font-size:22px;font-weight:700;color:#6825CD;
+      padding:6px 24px 4px;
+    }
+    .quiz-sub{
+      font-size:13px;color:#888;padding:0 24px 20px;
+      border-bottom:1px solid #F0EAF9;
+    }
+    .quiz-sub strong{color:#1a1a2e;}
+
+    .quiz-body{padding:20px 24px;}
+    .quiz-q{margin-bottom:28px;}
+    .quiz-q-label{
+      font-size:13px;font-weight:700;color:#6825CD;margin-bottom:10px;
+    }
+    .quiz-q-label span{color:#1a1a2e;}
+    .quiz-options{display:flex;flex-direction:column;gap:8px;}
+    .quiz-opt{
+      border:1.5px solid #DDD5F0;border-radius:10px;
+      padding:13px 16px;font-size:13px;color:#333;
+      cursor:pointer;transition:border-color 0.15s,background 0.15s;
+      line-height:1.4;
+    }
+    .quiz-opt:hover{border-color:#6825CD;background:#FAF8FF;}
+    .quiz-opt.selected{border-color:#6825CD;background:#FAF8FF;}
+    .quiz-opt.correct{border-color:#22C55E;background:#F0FDF4;color:#166534;font-weight:600;}
+    .quiz-opt.wrong{border-color:#EF4444;background:#FEF2F2;color:#991B1B;}
+    .quiz-opt.show-correct{border-color:#22C55E;background:#F0FDF4;color:#166534;font-weight:600;}
+    .quiz-opt.disabled{cursor:default;}
+
+    .quiz-btn-wrap{padding:0 24px 24px;text-align:center;}
+    .quiz-btn{
+      background:linear-gradient(135deg,#7B2FBE,#6825CD);
+      color:#fff;border:none;border-radius:10px;
+      padding:14px 40px;font-size:15px;font-weight:600;
+      cursor:pointer;transition:opacity 0.15s,transform 0.1s;
+    }
+    .quiz-btn:hover{opacity:0.92;transform:translateY(-1px);}
+    .quiz-btn:disabled{opacity:0.45;cursor:default;transform:none;}
+
+    .quiz-result{
+      margin:0 24px 20px;padding:16px 18px;
+      border-radius:10px;font-size:14px;font-weight:600;
+      display:none;
+    }
+    .quiz-result.pass{background:#F0FDF4;color:#166534;display:block;}
+    .quiz-result.fail{background:#FEF2F2;color:#991B1B;display:block;}
+
+    /* ── FOOTER ──────────────────────────── */
+    footer{
+      text-align:center;padding:20px 16px;
+      color:#AAA;font-size:12px;line-height:1.6;
+      border-top:1px solid #E8E0F5;background:#fff;
+    }
+
+    /* ── MOMENTO LLAVE MODAL ─────────────────────────── */
+    .ml-overlay{
+      position:fixed;inset:0;
+      background:rgba(30,10,60,0.55);
+      backdrop-filter:blur(4px);
+      display:flex;align-items:center;justify-content:center;
+      z-index:9999;
+      opacity:0;pointer-events:none;
+      transition:opacity 0.35s ease;
+    }
+    .ml-overlay.show{opacity:1;pointer-events:all;}
+
+    .ml-modal{
+      background:#fff;
+      border-radius:24px;
+      padding:44px 36px 36px;
+      max-width:360px;width:90%;
+      text-align:center;
+      transform:scale(0.88) translateY(20px);
+      transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow:0 24px 64px rgba(104,37,205,0.22);
+      position:relative;
+    }
+    .ml-overlay.show .ml-modal{transform:scale(1) translateY(0);}
+
+    .ml-modal-icon{
+      width:72px;height:72px;border-radius:50%;
+      background:linear-gradient(135deg,#7B2FBE,#6825CD);
+      margin:0 auto 20px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:32px;
+      box-shadow:0 8px 24px rgba(104,37,205,0.3);
+    }
+    .ml-modal-kicker{
+      font-size:11px;font-weight:700;letter-spacing:0.15em;
+      text-transform:uppercase;color:#7B2FBE;margin-bottom:12px;
+    }
+    .ml-modal-title{
+      font-size:22px;font-weight:800;color:#6825CD;
+      line-height:1.25;margin-bottom:12px;
+    }
+    .ml-modal-body{
+      font-size:14px;color:#555;line-height:1.65;margin-bottom:28px;
+    }
+    .ml-modal-btn{
+      background:linear-gradient(135deg,#7B2FBE,#6825CD);
+      color:#fff;border:none;border-radius:999px;
+      padding:13px 36px;font-size:15px;font-weight:700;
+      cursor:pointer;letter-spacing:0.01em;
+      transition:transform 0.15s,box-shadow 0.15s;
+      box-shadow:0 4px 16px rgba(104,37,205,0.3);
+    }
+    .ml-modal-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(104,37,205,0.4);}
+    .ml-modal-btn:active{transform:scale(0.97);}
+
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-logos">
+    <img src="https://drive.google.com/uc?export=view&id=12f9N7GGSgP4dFr57XYwmH48jSgBg0FgM" alt="TuHabi" style="height:36px;"/>
+    <div class="header-sep"></div>
+    <img src="https://drive.google.com/uc?export=view&id=17_N1pvK7Vd-FygCegvT-JZkSWcL15xJf" alt="Habi" style="height:36px;"/>
+  </div>
+  <p class="header-kicker">ONBOARDING GENERAL TUHABI · MÓDULO 9 DE 13</p>
+  <h1 class="header-title">Equipo De Trámites</h1>
+  <div class="header-chips">
+    <span class="chip">🎯 Para todo nuevo ingreso</span>
+    <span class="chip green">✅ Aprueba con 80%</span>
+  </div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <span class="progress-pct" id="progressPct">0%</span>
+</div>
+
+<!-- PAGE WRAP -->
+<main class="page-wrap">
+
+  <!-- INTRO CARD -->
+  <div class="intro-card">
+    <h2>¿Qué vas a lograr en este módulo?</h2>
+    <p>Conoce a fondo el Equipo de Trámites de TuHabi México: los documentos clave, el flujo operativo y los roles que hacen posible cada cierre inmobiliario.</p>
+    <div class="llave-chips">
+      <span class="llave-chip">🔑 Jugamos para el equipo morado</span>
+      <span class="llave-chip">🔑 La mesa de nuestra casa es redonda</span>
+    </div>
+  </div>
+
+  <!-- SECTION LABEL -->
+  <p class="section-label">RECORRE EL CONTENIDO</p>
+
+  <!-- ACCORDION 1: Intro -->
+  <div class="accordion">
+    <div class="acc-header" data-idx="0" onclick="toggleAcc(0)">
+      <div class="acc-num">1</div>
+      <span class="acc-title">Intro</span>
+      <span class="acc-meta">~1 min</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" id="acc-0">
+      <div class="acc-inner">
+        <p>El Ejecutivo Comercial cierra el trato, pero el Equipo de Trámites se asegura de que sea legal, seguro y eficiente. Somos el puente entre la firma comercial y la escritura pública.</p>
+        <p>¿Por qué te importa esto aunque no estés en Trámites? Porque en algún momento vas a escuchar estos términos, y entenderlos te hace más efectivo en cualquier rol dentro de TuHabi México.</p>
+        <p>El proceso de Trámites en México tiene sus propios documentos clave que son distintos a Colombia. El más crítico: el <strong>Certificado de Libertad de Gravamen (CLG)</strong> — gestionado el mismo día de la asignación del negocio.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCORDION 2: Términos Clave -->
+  <div class="accordion">
+    <div class="acc-header" data-idx="1" onclick="toggleAcc(1)">
+      <div class="acc-num">2</div>
+      <span class="acc-title">Términos Clave</span>
+      <span class="acc-meta">~2 min</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" id="acc-1">
+      <div class="acc-inner">
+        <p>Ocho términos que todo colaborador TuHabi México debe conocer:</p>
+        <dl class="term-list">
+          <div class="term-item">
+            <dt>Certificado de Libertad de Gravamen <span class="term-tag">CLG</span></dt>
+            <dd>También llamado "Certificación de Antecedentes Registrales". Acredita que el inmueble no tiene deudas, hipotecas, embargos ni ningún problema legal inscrito. Es el documento más crítico del proceso — se gestiona el mismo día de la asignación del negocio.</dd>
+          </div>
+          <div class="term-item alt">
+            <dt>Folio Real Electrónico</dt>
+            <dd>Número de registro electrónico del inmueble en el Registro Público de la Propiedad. Debe aparecer en la escritura para poder solicitar el CLG. Su ausencia bloquea el proceso.</dd>
+          </div>
+          <div class="term-item">
+            <dt>Escrituras con Medidas y Colindancias</dt>
+            <dd>Documento notarial del inmueble. Debe contener el número de Folio Real o el tomo y sección para que el proceso avance. Si no lo tiene, el proceso se pausa hasta obtenerlo.</dd>
+          </div>
+          <div class="term-item alt">
+            <dt>CURP <span class="term-tag">ID personal</span></dt>
+            <dd>Clave Única de Registro de Población del cliente (seller). Requerida para la firma notarial. Se verifica en renapo.gob.mx con leyenda "CURP Certificada". Si el cliente no la tiene, debe ir a RENAPO con acta de nacimiento u otro documento probatorio.</dd>
+          </div>
+          <div class="term-item">
+            <dt>RFC / Constancia de Situación Fiscal del SAT</dt>
+            <dd>Constancia fiscal vigente no mayor a 3 meses, en PDF, obtenida desde sat.gob.mx. Es distinta a la cédula de identificación fiscal.</dd>
+          </div>
+          <div class="term-item alt">
+            <dt>INE</dt>
+            <dd>Identificación oficial vigente del cliente (seller), requerida como parte del expediente.</dd>
+          </div>
+          <div class="term-item">
+            <dt>Carta Saldo / Carta de cancelación de crédito</dt>
+            <dd>Documento emitido por la institución financiera (INFONAVIT, FOVISSTE, Bancomer, HSBC, etc.) que certifica el saldo pendiente de un crédito hipotecario o su cancelación. Para INFONAVIT se emite entre los días 11 y 31 del mes; la solicitud puede hacerse cualquier día hábil pero el trámite tarda al menos 1 día hábil.</dd>
+          </div>
+          <div class="term-item alt">
+            <dt>Poder Notarial</dt>
+            <dd>Documento que permite que TuHabi actúe en nombre del cliente en la firma. Es un tema clave que todos los colaboradores deben entender: qué tipo de poder es y por qué es seguro manejarlo con él.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCORDION 3: Estructura y Flujo -->
+  <div class="accordion">
+    <div class="acc-header" data-idx="2" onclick="toggleAcc(2)">
+      <div class="acc-num">3</div>
+      <span class="acc-title">Estructura y Flujo</span>
+      <span class="acc-meta">~1.5 min</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" id="acc-2">
+      <div class="acc-inner">
+        <p>Una vez que el Ejecutivo Comercial cierra la negociación, el proceso avanza por 8 pasos claramente definidos:</p>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <p class="step-title">Cierre del negocio</p>
+              <p class="step-desc">El Ejecutivo Comercial acuerda la compra con el cliente, completa la documentación en la carpeta del negocio y notifica al área Legal.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <p class="step-title">Validación y registro</p>
+              <p class="step-desc">El Coordinador verifica que existan los documentos mínimos requeridos (identificación oficial, escrituras y contrato firmado), registra el negocio en los sistemas de control internos y actualiza los sistemas de seguimiento.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <p class="step-title">Asignación del trámite</p>
+              <p class="step-desc">El Coordinador asigna el caso a un Analista de Trámites responsable de gestionar el expediente.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <p class="step-title">Primer contacto con el cliente</p>
+              <p class="step-desc">Dentro de las primeras <strong>24 horas</strong>, el Analista de Trámites se presenta al cliente y solicita toda la documentación necesaria para la operación.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <p class="step-title">Gestión documental</p>
+              <p class="step-desc">El Analista revisa, valida y da seguimiento a los documentos recibidos, asegurando que sean legibles, vigentes y consistentes con la información del inmueble y del propietario.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">6</div>
+            <div class="step-body">
+              <p class="step-title">Gestión registral en paralelo</p>
+              <p class="step-desc">Mientras se recopilan los documentos del cliente, el Analista solicita internamente el CLG y/o la Constancia de Folio Real (CFR) a través del equipo de Notarías.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">7</div>
+            <div class="step-body">
+              <p class="step-title">Seguimiento y actualización</p>
+              <p class="step-desc">El Analista mantiene comunicación constante con el cliente, actualiza los sistemas de control y resguarda la documentación recibida.</p>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-num">8</div>
+            <div class="step-body">
+              <p class="step-title">Expediente completo</p>
+              <p class="step-desc">Una vez que se cuenta con toda la documentación requerida y validada, el expediente queda listo para continuar con las siguientes etapas del trámite.</p>
+            </div>
+          </div>
+        </div>
+        <div class="momento-llave">
+          <p class="ml-label">🟣 Momento Llave</p>
+          <p class="ml-text">Jugamos para el equipo morado</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCORDION 4: Cierre -->
+  <div class="accordion">
+    <div class="acc-header" data-idx="3" onclick="toggleAcc(3)">
+      <div class="acc-num">4</div>
+      <span class="acc-title">Cierre</span>
+      <span class="acc-meta">~20 seg</span>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" id="acc-3">
+      <div class="acc-inner">
+        <p>Tu atención al detalle en Trámites no solo previene riesgos legales, sino que garantiza que cada cliente tenga una experiencia confiable y segura al vender su inmueble con TuHabi.</p>
+        <p>Cada expediente completo es una promesa cumplida. Cada CLG gestionado a tiempo es un paso hacia el cierre exitoso de la operación.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <p class="quiz-eyebrow">EVALUACIÓN DE APRENDIZAJE</p>
+    <h2 class="quiz-title">Pon a prueba lo que aprendiste</h2>
+    <p class="quiz-sub">Responde las 5 preguntas. Necesitas <strong>mínimo 80% (4 de 5)</strong> para aprobar.</p>
+
+    <div class="quiz-body">
+
+      <div class="quiz-q">
+        <p class="quiz-q-label"><span>1. ¿Cuál es el documento más crítico del proceso de Trámites en México y cuándo se gestiona?</span></p>
+        <div class="quiz-options">
+          <div class="quiz-opt" data-q="1" data-val="a">La Escritura Pública — se gestiona al final del proceso</div>
+          <div class="quiz-opt" data-q="1" data-val="b">El Certificado de Libertad de Gravamen (CLG) — se gestiona el mismo día de la asignación del negocio</div>
+          <div class="quiz-opt" data-q="1" data-val="c">El CURP — se gestiona antes del cierre comercial</div>
+          <div class="quiz-opt" data-q="1" data-val="d">La Constancia de Situación Fiscal — se gestiona en paralelo a la firma</div>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <p class="quiz-q-label"><span>2. ¿Qué pasa si las escrituras del inmueble no contienen el número de Folio Real Electrónico?</span></p>
+        <div class="quiz-options">
+          <div class="quiz-opt" data-q="2" data-val="a">El proceso avanza normalmente con otros documentos</div>
+          <div class="quiz-opt" data-q="2" data-val="b">Se solicita directamente al cliente que lo consiga en 24 horas</div>
+          <div class="quiz-opt" data-q="2" data-val="c">El proceso se pausa hasta obtener el número de folio o la hoja de inscripción a Registro</div>
+          <div class="quiz-opt" data-q="2" data-val="d">Se puede omitir si el cliente tiene INE vigente</div>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <p class="quiz-q-label"><span>3. ¿Cuánto tiempo tiene el Analista de Trámites para hacer el primer contacto con el cliente después de la asignación?</span></p>
+        <div class="quiz-options">
+          <div class="quiz-opt" data-q="3" data-val="a">48 horas</div>
+          <div class="quiz-opt" data-q="3" data-val="b">72 horas</div>
+          <div class="quiz-opt" data-q="3" data-val="c">24 horas</div>
+          <div class="quiz-opt" data-q="3" data-val="d">Una semana hábil</div>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <p class="quiz-q-label"><span>4. ¿Cuáles son los documentos mínimos indispensables que el Coordinador valida antes de registrar el negocio?</span></p>
+        <div class="quiz-options">
+          <div class="quiz-opt" data-q="4" data-val="a">CLG, CURP y RFC</div>
+          <div class="quiz-opt" data-q="4" data-val="b">Identificación oficial, escrituras y contrato firmado</div>
+          <div class="quiz-opt" data-q="4" data-val="c">Carta saldo, INE y poder notarial</div>
+          <div class="quiz-opt" data-q="4" data-val="d">Folio Real, avalúo y promesa de compraventa</div>
+        </div>
+      </div>
+
+      <div class="quiz-q">
+        <p class="quiz-q-label"><span>5. ¿Qué gestión ocurre en paralelo mientras el Analista recopila documentos del cliente?</span></p>
+        <div class="quiz-options">
+          <div class="quiz-opt" data-q="5" data-val="a">Se realiza el avalúo del inmueble</div>
+          <div class="quiz-opt" data-q="5" data-val="b">Se solicita el CLG y/o la Constancia de Folio Real (CFR) al equipo de Notarías</div>
+          <div class="quiz-opt" data-q="5" data-val="c">Se registra el negocio en los sistemas de control</div>
+          <div class="quiz-opt" data-q="5" data-val="d">Se elabora el contrato de compraventa</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="quiz-result" id="quizResult"></div>
+    <div class="quiz-btn-wrap">
+      <button class="quiz-btn" id="quizBtn" disabled onclick="submitQuiz()">Verificar respuestas</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Onboarding General TuHabi 2026 · Módulo 9 de 13 · People — Formación<br/>
+  🔑 Activa el sonido para escuchar el "click" de cerradura en cada Momento Llave.
+</footer>
+
+<script>
+  // ── ACCORDION ─────────────────────────────────────────
+  const totalSections = 4;
+  let openSections = new Set();
+
+  function toggleAcc(idx){
+    const body = document.getElementById('acc-'+idx);
+    const header = document.querySelector(`.acc-header[data-idx="${idx}"]`);
+    const isOpen = body.classList.contains('open');
+    if(isOpen){
+      body.classList.remove('open');
+      header.classList.remove('open');
+      openSections.delete(idx);
+    } else {
+      body.classList.add('open');
+      header.classList.add('open');
+      openSections.add(idx);
+    }
+    updateProgress();
+  }
+
+  function updateProgress(){
+    const quizDone = document.getElementById('quizResult').classList.contains('pass');
+    const pct = Math.round(((openSections.size / totalSections) * 0.8 + (quizDone ? 0.2 : 0)) * 100);
+    document.getElementById('progressFill').style.width = pct+'%';
+    document.getElementById('progressPct').textContent = pct+'%';
+  }
+
+  // ── QUIZ ──────────────────────────────────────────────
+  const answers = {'1':'b','2':'c','3':'c','4':'b','5':'b'};
+  const selected = {};
+
+  document.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const q = opt.dataset.q;
+      if(selected[q] !== undefined) return;
+      // deselect others in same q
+      document.querySelectorAll(`.quiz-opt[data-q="${q}"]`).forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      selected[q] = opt.dataset.val;
+      if(Object.keys(selected).length === 5){
+        document.getElementById('quizBtn').disabled = false;
+      }
+    });
+  });
+
+  function submitQuiz(){
+    let correct = 0;
+    for(const [q, ans] of Object.entries(selected)){
+      const opts = document.querySelectorAll(`.quiz-opt[data-q="${q}"]`);
+      opts.forEach(o => {
+        o.classList.add('disabled');
+        if(o.dataset.val === answers[q]) o.classList.add('show-correct');
+        if(o.dataset.val === ans && ans !== answers[q]) o.classList.add('wrong');
+        o.classList.remove('selected');
+      });
+      if(ans === answers[q]) correct++;
+    }
+    const pct = Math.round((correct/5)*100);
+    const res = document.getElementById('quizResult');
+    if(pct >= 80){
+      res.className = 'quiz-result pass';
+      res.innerHTML = `✅ ¡Aprobado! ${correct}/5 correctas (${pct}%). ¡Excelente trabajo!`;
+    } else {
+      res.className = 'quiz-result fail';
+      res.innerHTML = `❌ ${correct}/5 correctas (${pct}%). Necesitas al menos 80%. Revisa el contenido e inténtalo de nuevo.`;
+    }
+    document.getElementById('quizBtn').disabled = true;
+    updateProgress();
+  }
+
+  // ── MOMENTO LLAVE MODAL ────────────────────────────────
+  function playBell(){
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [
+        {freq:1046.5, gain:0.6, dur:1.8},
+        {freq:1318.5, gain:0.35, dur:1.5},
+        {freq:1568.0, gain:0.25, dur:1.2},
+        {freq:2093.0, gain:0.15, dur:0.9},
+      ];
+      notes.forEach(({freq, gain, dur}, i) => {
+        const osc  = ctx.createOscillator();
+        const env  = ctx.createGain();
+        const t = ctx.currentTime + i * 0.06;
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, t);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.995, t + dur);
+        env.gain.setValueAtTime(0, t);
+        env.gain.linearRampToValueAtTime(gain, t + 0.01);
+        env.gain.exponentialRampToValueAtTime(0.001, t + dur);
+        osc.connect(env); env.connect(ctx.destination);
+        osc.start(t); osc.stop(t + dur + 0.05);
+      });
+      setTimeout(() => {
+        const notes2 = [
+          {freq:1318.5, gain:0.4, dur:1.4},
+          {freq:1568.0, gain:0.25, dur:1.1},
+          {freq:2093.0, gain:0.18, dur:0.8},
+        ];
+        notes2.forEach(({freq, gain, dur}, i) => {
+          const osc2 = ctx.createOscillator();
+          const env2 = ctx.createGain();
+          const t2 = ctx.currentTime + i * 0.05;
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(freq, t2);
+          env2.gain.setValueAtTime(0, t2);
+          env2.gain.linearRampToValueAtTime(gain, t2 + 0.01);
+          env2.gain.exponentialRampToValueAtTime(0.001, t2 + dur);
+          osc2.connect(env2); env2.connect(ctx.destination);
+          osc2.start(t2); osc2.stop(t2 + dur + 0.05);
+        });
+      }, 350);
+    } catch(e){ console.warn('Audio not available', e); }
+  }
+
+  function openMlModal(){
+    document.getElementById('mlOverlay').classList.add('show');
+    playBell();
+  }
+
+  function closeMlModal(){
+    document.getElementById('mlOverlay').classList.remove('show');
+  }
+
+  // Backdrop click closes modal
+  document.getElementById('mlOverlay').addEventListener('click', function(e){
+    if(e.target === this) closeMlModal();
+  });
+
+  // Escape key closes modal
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMlModal();
+  });
+
+  // Auto-open when momento-llave card scrolls into view
+  (function(){
+    const card = document.querySelector('.momento-llave');
+    if(!card) return;
+    let fired = false;
+    const obs = new IntersectionObserver(function(entries){
+      if(!fired && entries[0].isIntersecting){
+        fired = true;
+        setTimeout(openMlModal, 400);
+        obs.disconnect();
+      }
+    }, {threshold: 0.6});
+    obs.observe(card);
+  })();
+
+</script>
+
+<!-- MOMENTO LLAVE MODAL -->
+<div class="ml-overlay" id="mlOverlay" role="dialog" aria-modal="true" aria-labelledby="mlTitle">
+  <div class="ml-modal">
+    <div class="ml-modal-icon">🔑</div>
+    <p class="ml-modal-kicker">Momento Llave Masterkey</p>
+    <h2 class="ml-modal-title" id="mlTitle">Jugamos para el equipo morado</h2>
+    <p class="ml-modal-body">La mesa es redonda — los problemas complejos de legalización se resuelven con todas las voces.</p>
+    <button class="ml-modal-btn" onclick="closeMlModal()">Entendido</button>
+  </div>
+</div>
+
+</body>
+</html>
